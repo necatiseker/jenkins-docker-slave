@@ -2,7 +2,7 @@
 set -e
 
 LABELS="${LABELS:-docker}"
-EXECUTORS="${EXECUTORS:-3}"
+EXECUTORS="${EXECUTORS:-8}"
 FSROOT="${FSROOT:-/tmp/jenkins}"
 
 mkdir -p $FSROOT
