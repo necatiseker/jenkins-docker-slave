@@ -14,6 +14,8 @@ RUN set -ex; \
   \
   apk del .fetch-deps; \
   \
+  chmod +x /usr/bin/docker-compose \
+  \
   docker-compose -v
 
 COPY entrypoint.sh /
