@@ -14,11 +14,7 @@ RUN set -ex; \
   \
   apk del .fetch-deps; \
   \
-  chmod +x /usr/bin/docker-compose; \
-  \
-  node --version; \
-  yarn --version; \
-  npm --verson
+  chmod +x /usr/bin/docker-compose
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh  \
