@@ -10,7 +10,7 @@ RUN apk add --no-cache ca-certificates curl git \
    sudo
 
 RUN pip --no-cache-dir install -U pip \
-   && pip --no-cache-dir install --target=/usr/local/bin/docker-compose docker-compose 
+   && pip --no-cache-dir install --install-option="--prefix=/usr/local/bin" docker-compose 
 
 RUN adduser -D -h $JENKINS_HOME -s /bin/sh jenkins jenkins \
    && chmod a+rwx $JENKINS_HOME
