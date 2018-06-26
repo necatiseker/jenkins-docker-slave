@@ -4,8 +4,7 @@ ENV SWARM_CLIENT_VERSION 3.13
 
 RUN apk add --no-cache ca-certificates git \
    openjdk8-jre \
-   python py-setuptools py-pip \
-   sudo
+   python py-setuptools py-pip
 
 RUN pip --no-cache-dir install -U pip \
    && pip --no-cache-dir install docker-compose 
