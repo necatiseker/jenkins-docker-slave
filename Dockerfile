@@ -9,13 +9,14 @@ RUN apk add --no-cache ca-certificates curl git \
    python py-setuptools py-pip \
    sudo
 
-RUN pip --no-cache-dir install --target=/usr/local/bin docker-compose 
+RUN pip --no-cache-dir install -U pip \
+   && pip --no-cache-dir install --target=/usr/local/bin/docker-compose docker-compose 
 
 RUN adduser -D -h $JENKINS_HOME -s /bin/sh jenkins jenkins \
-    && chmod a+rwx $JENKINS_HOME
+   && chmod a+rwx $JENKINS_HOME
 
 RUN echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/docker" > /etc/sudoers.d/00jenkins \
-    && chmod 440 /etc/sudoers.d/00jenkins
+   && chmod 440 /etc/sudoers.d/00jenkins
   
 RUN curl --create-dirs -sSLo /usr/local/jenkins/slave.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_CLIENT_VERSION}/swarm-client-${SWARM_CLIENT_VERSION}.jar \
    && chmod 755 /usr/local/jenkins \
