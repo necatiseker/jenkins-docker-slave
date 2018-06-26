@@ -23,7 +23,7 @@ RUN curl --create-dirs -sSLo /usr/local/jenkins/slave.jar https://repo.jenkins-c
 
 COPY entrypoint.sh /usr/local/jenkins/entrypoint.sh
 
-RUN chmod +x /usr/local/jenkins/entrypoint.sh  \
+RUN chmod +x /usr/local/jenkins/entrypoint.sh \
    && sed -i -e 's/\r$//' /usr/local/jenkins/entrypoint.sh
 
 CMD ["/usr/local/jenkins/entrypoint.sh"]  
