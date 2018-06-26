@@ -87,6 +87,7 @@ RUN apk add --no-cache --virtual .build-deps-slave curl \
     && curl --create-dirs -sSLo /usr/local/jenkins/slave.jar "https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/${SWARM_CLIENT_VERSION}/swarm-client-${SWARM_CLIENT_VERSION}.jar" \
     && chmod 755 /usr/local/jenkins \
     && chmod 644 /usr/local/jenkins/slave.jar
+    && apk del .build-deps-slave
 
 COPY entrypoint.sh /usr/local/jenkins/entrypoint.sh
 
