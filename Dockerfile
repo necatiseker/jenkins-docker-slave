@@ -70,19 +70,19 @@ RUN apk add --no-cache curl git openjdk8-jre sudo && \
   chmod a+rwx $JENKINS_HOME && \
   echo "jenkins ALL=(ALL) NOPASSWD: /usr/local/bin/docker" > /etc/sudoers.d/00jenkins && \
   chmod 440 /etc/sudoers.d/00jenkins && \
-  curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$SLAVE_VERSION/swarm-client-$SLAVE_VERSION.jar && \
-  chmod 755 /usr/share/jenkins && \
-  chmod 644 /usr/share/jenkins/slave.jar && \
+  curl --create-dirs -sSLo /usr/local/jenkins/slave.jar https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$SLAVE_VERSION/swarm-client-$SLAVE_VERSION.jar && \
+  chmod 755 /usr/local/jenkins && \
+  chmod 644 /usr/local/jenkins/slave.jar && \
   apk del curl
 
-COPY entrypoint.sh /usr/share/jenkins/entrypoint.sh
+COPY entrypoint.sh /usr/local/jenkins/entrypoint.sh
 
 VOLUME $JENKINS_HOME
 WORKDIR $JENKINS_HOME
 
 USER jenkins
 
-RUN sudo chmod +x /usr/share/jenkins/entrypoint.sh \
-    && sudo sed -i -e 's/\r$//' /usr/share/jenkins/entrypoint.sh
+RUN sudo chmod +x /usr/local/jenkins/entrypoint.sh \
+    && sudo sed -i -e 's/\r$//' /usr/local/jenkins/entrypoint.sh
 
-CMD ["sudo /usr/share/jenkins/entrypoint.sh"]
+CMD ["sudo /usr/local/jenkins/entrypoint.sh"]
