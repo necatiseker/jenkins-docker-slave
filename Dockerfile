@@ -75,14 +75,14 @@ RUN apk add --no-cache curl git openjdk8-jre sudo && \
   chmod 644 /usr/share/jenkins/slave.jar && \
   apk del curl
 
-COPY entrypoint.sh /
+COPY entrypoint.sh /usr/share/jenkins/entrypoint.sh
 
 VOLUME $JENKINS_HOME
 WORKDIR $JENKINS_HOME
 
 USER jenkins
 
-RUN chmod +x /entrypoint.sh \
-    && sed -i -e 's/\r$//' /entrypoint.sh
+RUN sudo chmod +x /usr/share/jenkins/entrypoint.sh \
+    && sudo sed -i -e 's/\r$//' /usr/share/jenkins/entrypoint.sh
 
-CMD ["/entrypoint.sh"]
+CMD ["sudo /usr/share/jenkins/entrypoint.sh"]
