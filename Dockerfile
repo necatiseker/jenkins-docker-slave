@@ -2,6 +2,7 @@ FROM docker:18.05.0-ce
 
 ENV GLIBC 2.27-r0
 ENV COMPOSE_VERSION 1.21.2
+ENV KOMPOSE_VERSION 1.14.0
 
 RUN apk update && apk add --no-cache openssl ca-certificates curl libgcc && \
   curl -fsSL -o /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
@@ -12,6 +13,8 @@ RUN apk update && apk add --no-cache openssl ca-certificates curl libgcc && \
   ln -s /usr/lib/libgcc_s.so.1 /usr/glibc-compat/lib && \
   curl -L https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose && \
   chmod +x /usr/local/bin/docker-compose && \
+  curl -L https://github.com/kubernetes/kompose/releases/download/v$KOMPOSE_VERSION/kompose-$(uname -s)-$(uname -m) -o /usr/local/bin/kompose && \
+  chmod +x /usr/local/bin/kompose && \
   rm /etc/apk/keys/sgerrand.rsa.pub glibc-$GLIBC.apk && \
   apk del curl
 
@@ -61,7 +64,7 @@ RUN apk add --no-cache curl make gcc g++ python linux-headers binutils-gold gnup
   rm -rf ${RM_DIRS} /node-${VERSION}* /usr/share/man /tmp/* /var/cache/apk/* \
     /root/.npm /root/.node-gyp /root/.gnupg /usr/lib/node_modules/npm/man \
     /usr/lib/node_modules/npm/doc /usr/lib/node_modules/npm/html /usr/lib/node_modules/npm/scripts
-  
+
 ENV JENKINS_HOME /home/jenkins
 ENV SLAVE_VERSION 3.13
 
@@ -75,14 +78,12 @@ RUN apk add --no-cache curl git openjdk8-jre sudo && \
   chmod 644 /usr/local/jenkins/slave.jar && \
   apk del curl
 
-COPY entrypoint.sh /usr/local/jenkins/entrypoint.sh
+COPY slave /usr/local/bin/slave
+RUN chmod +x /usr/local/bin/slave
 
 VOLUME $JENKINS_HOME
 WORKDIR $JENKINS_HOME
 
 USER jenkins
 
-RUN sudo chmod +x /usr/local/jenkins/entrypoint.sh \
-    && sudo sed -i -e 's/\r$//' /usr/local/jenkins/entrypoint.sh
-
-CMD ["sudo /usr/local/jenkins/entrypoint.sh"]
+ENTRYPOINT ["slave"]
