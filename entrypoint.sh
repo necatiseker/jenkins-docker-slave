@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-cd /usr/share/jenkins
+cd $(dirname $0)
 
 LABELS="${LABELS:-docker}"
 EXECUTORS="${EXECUTORS:-8}"
